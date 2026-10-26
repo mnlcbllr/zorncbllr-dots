@@ -73,6 +73,7 @@ fi
 # kitty needs the explicit escape sequence to clear scrollback too
 alias clear="printf '\033[2J\033[3J\033[1;1H'"
 alias celar=clear claer=clear
+alias open='xdg-open'
 alias q='qs -c ii'
 if [[ "$TERM" != "linux"* ]] && (( $+commands[eza] )); then alias ls='eza --icons=auto'; fi
 [[ "$TERM" == "xterm-kitty" ]] && alias ssh='kitten ssh'
@@ -83,3 +84,16 @@ if [[ "$TERM" != "linux"* ]] && (( $+commands[eza] )); then alias ls='eza --icon
 # --- Syntax highlighting (must come last) -------------------------------------
 [[ -r $_p/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && source $_p/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 unset _p
+
+[[ -r "$HOME/.local/bin/env" ]] && . "$HOME/.local/bin/env"
+
+# Lazy-load conda: real init runs on first use
+conda() {
+  unset -f conda
+  eval "$(/opt/anaconda/bin/conda shell.zsh hook)"
+  conda "$@"
+}
+
+
+# Composio CLI
+export PATH="$HOME/.local/bin:$PATH"
