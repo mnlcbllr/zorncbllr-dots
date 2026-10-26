@@ -208,8 +208,18 @@ hl.bind("SUPER + SHIFT + ALT + Q", hl.dsp.exec_cmd("hyprctl kill"), { descriptio
 hl.bind("SUPER + Semicolon", hl.dsp.layout("splitratio -0.1"), { repeating = true })
 hl.bind("SUPER + Apostrophe", hl.dsp.layout("splitratio +0.1"), { repeating = true })
 --# Positioning mode
---#/# bind = SUPER, Space,, -- Float/tile (a freshly floated window shrinks to floatScale of the work area)
-local floatScale = 0.8
+--#/# bind = SUPER, Space,, -- Float/tile (a freshly floated window shrinks to floatScaleW x floatScaleH of the work area)
+local floatScaleW, floatScaleH = 0.66, 0.8
+-- Idle terminals (just a prompt) float small. Shell integration titles an idle
+-- terminal with its cwd ("~", "/etc"), and a running program retitles it.
+local idleTermScale = { 0.285, 0.31 }
+local termClasses = { kitty = true, foot = true }
+local function float_scale(win)
+    if termClasses[win.class] and (win.title or ""):match("^[~/]") then
+        return idleTermScale
+    end
+    return { floatScaleW, floatScaleH }
+end
 local function toggle_float()
     local win = hl.get_active_window()
     if not win then return end
@@ -225,7 +235,8 @@ local function toggle_float()
     local padT, padB = res.top or 0, res.bottom or 0
     local areaX, areaY = mon.x + padL, mon.y + padT
     local areaW, areaH = mon.width - padL - padR, mon.height - padT - padB
-    local w, h = math.floor(areaW * floatScale), math.floor(areaH * floatScale)
+    local scale = float_scale(win)
+    local w, h = math.floor(areaW * scale[1]), math.floor(areaH * scale[2])
     hl.dispatch(hl.dsp.window.resize({ x = w, y = h }))
     hl.dispatch(hl.dsp.window.move({ x = math.floor(areaX + (areaW - w) / 2), y = math.floor(areaY + (areaH - h) / 2) }))
 end
