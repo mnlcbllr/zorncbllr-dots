@@ -137,6 +137,11 @@ Copy anything you want back from `~/.dotfiles-backup-<timestamp>/`.
   adds the missing `\` defensively.
 - **"command not found" gives no package suggestions:** run `sudo pkgfile --update` once.
 
+## Project links
+
+- [zorncbllr-dots project overview](https://manuelcaballero.dev/projects/zorncbllr-dots)
+- [Manuel Caballero — Full-Stack AI Engineer](https://manuelcaballero.dev)
+
 ## Credits and licence
 Derived from [end-4/dots-hyprland](https://github.com/end-4/dots-hyprland)
 (Illogical Impulse) and its contributors. Licensed under GPL-3.0, see `LICENSE`.
